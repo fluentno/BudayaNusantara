@@ -1,0 +1,50 @@
+{
+  "batik": {
+    "price": 150000,
+    "image": "batik.jpg",
+    "desc": "Kain motif tradisional Nusantara",
+    "story": "Batik diakui sebagai Warisan Kemanusiaan untuk Budaya Lisan dan Nonbendawi pada 2 Oktober 2009. Setiap motifnya digambar dengan canting dan malam, mengandung filosofi mendalam tentang siklus kehidupan manusia.",
+    "source": "UNESCO - Intangible Cultural Heritage (2009)",
+    "name": "Batik"
+  },
+  "wayang": {
+    "price": 250000,
+    "image": "wayang.png",
+    "desc": "Kerajinan kulit tokoh pewayangan",
+    "story": "Wayang kulit terbuat dari lembaran kulit kerbau. Seni pertunjukan ini bukan sekadar hiburan, melainkan media penyampaian nilai moral dan spiritual melalui epik kuno seperti Ramayana dan Mahabharata.",
+    "source": "UNESCO - Masterpiece of Oral and Intangible Heritage of Humanity (2003)",
+    "name": "Wayang"
+  },
+  "angklung": {
+    "price": 75000,
+    "image": "angklung.png",
+    "desc": "Alat musik bambu khas Sunda",
+    "story": "Angklung menghasilkan suara saat digoyangkan. Filosofinya sangat indah: harmoni kehidupan hanya bisa tercipta jika kita saling bekerja sama, karena satu angklung hanya memegang satu nada.",
+    "source": "UNESCO - Representative List of the Intangible Cultural Heritage (2010)",
+    "name": "Angklung"
+  },
+  "ukiran": {
+    "price": 120000,
+    "image": "ukiran.jpg",
+    "desc": "Hiasan pahatan kayu khas Jepara",
+    "story": "Seni ukir Jepara sudah ada sejak zaman pemerintahan Ratu Kalinyamat di abad ke-16. Motif daun dan bunga yang sering digunakan melambangkan keharmonisan manusia dengan alam semesta.",
+    "source": "Kementerian Pendidikan dan Kebudayaan RI - Warisan Budaya Takbenda",
+    "name": "Ukiran"
+  },
+  "kipas": {
+    "name": "Kipas Kayu Cendana",
+    "price": 150000,
+    "image": "kipas.jpg",
+    "desc": "Kerajinan tangan tradisional, populer dari daerah Bali, yang terbuat dari kayu beraroma harum alam.",
+    "story": "Kipas kayu cendana adalah salah satu kerajinan tangan khas Bali yang telah diwariskan turun-temurun. Kayu cendana (Santalum album) dipilih bukan hanya karena keindahan seratnya, tetapi juga karena aromanya yang harum dan dipercaya memiliki nilai spiritual — sering digunakan dalam upacara adat dan persembahan keagamaan di Bali.",
+    "source": "Dinas Kebudayaan Provinsi Bali"
+  },
+  "songket": {
+    "name": "Kain Songket",
+    "price": 350000,
+    "image": "songket.jpg",
+    "desc": "Kain tenun tradisional benang emas khas Sumatera",
+    "story": "Songket adalah kain tenun mewah yang ditenun dengan benang emas atau perak, berasal dari kebudayaan Melayu Sumatera — khususnya Palembang dan Minangkabau. Kata 'songket' berasal dari 'sungkit' yang berarti mencungkil benang. Kain ini dulunya hanya boleh dikenakan oleh kaum bangsawan dan raja sebagai simbol status dan keagungan. Setiap motifnya — seperti Lepus, Pulir, dan Bungo Pacik — mengandung makna spiritual dan harapan bagi pemakainya.",
+    "source": "Kemendikbud RI — Warisan Budaya Takbenda"
+  }
+}

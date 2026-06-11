@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png">
+  <title>Budaya Nusantara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #FFFFFF;
+      --bg-soft:    #F8F8F8;
+      --bg-card:    #FFFFFF;
+      --border:     #EBEBEB;
+      --text:       #1A1A1A;
+      --text-muted: #888888;
+      --accent:     #E07B5A;
+      --accent-lt:  #FDF0EB;
+      --green:      #6AAF8B;
+      --rose:       #D4888A;
+      --nav-bg:     #FFFFFF;
+      --nav-border: #EBEBEB;
+    }
+
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+    #app { min-height: 100vh; }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--nav-bg);
+      padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+      position: sticky; top: 0; z-index: 1000;
+      border-bottom: 1px solid var(--nav-border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .nav-logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-logo-text { color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -.2px; }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-btn {
+      background: none; border: none; color: var(--text-muted);
+      padding: 7px 14px; border-radius: 8px; font-size: 13px;
+      cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
+      transition: all .18s;
+    }
+    .nav-btn:hover { background: var(--bg-soft); color: var(--text); }
+    .nav-btn.active { background: var(--bg-soft); color: var(--text); font-weight: 600; }
+    .nav-chat-btn {
+      background: var(--text);
+      border: none; color: #fff;
+      padding: 7px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 7px;
+      transition: .18s; font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .nav-chat-btn:hover { background: #333; }
+
+    /* ── HERO SLIDER ── */
+    .hero { position: relative; height: 420px; overflow: hidden; }
+    .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; transition: opacity .8s; display: flex; align-items: flex-end; }
+    .hero-slide.active { opacity: 1; z-index: 2; }
+    .hero-slide.inactive { opacity: 0; z-index: 1; }
+    .hero-overlay { background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.06) 60%); padding: 44px 52px; width: 100%; }
+    .hero-tag { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px; letter-spacing: .8px; text-transform: uppercase; }
+    .hero-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.3rem; font-weight: 800; color: #fff; line-height: 1.18; max-width: 580px; letter-spacing: -.5px; }
+    .hero-sub { color: rgba(255,255,255,.72); font-size: .9rem; margin-top: 10px; max-width: 460px; line-height: 1.6; }
+    .hero-dots { position: absolute; bottom: 18px; right: 42px; display: flex; gap: 7px; z-index: 10; }
+    .hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.35); border: none; cursor: pointer; transition: .2s; }
+    .hero-dot.active { background: #fff; width: 22px; border-radius: 4px; }
+    .hero-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25); color: white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; transition: .2s; backdrop-filter: blur(4px); }
+    .hero-arrow:hover { background: rgba(255,255,255,.28); }
+    .hero-arrow.left { left: 20px; }
+    .hero-arrow.right { right: 20px; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 52px; }
+    .section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.7rem; color: var(--text); font-weight: 800; letter-spacing: -.4px; }
+    .section-sub { color: var(--text-muted); font-size: .86rem; margin-top: 5px; }
+    .section-header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-end; }
+
+    /* ── STATS BAR ── */
+    .stats-bar { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 52px; display: flex; }
+    .stat-item { flex: 1; text-align: center; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.85rem; color: var(--text); font-weight: 800; letter-spacing: -.5px; }
+    .stat-lbl { color: var(--text-muted); font-size: .76rem; margin-top: 3px; font-weight: 500; letter-spacing: .3px; text-transform: uppercase; }
+
+    /* ── GALLERY GRID ── */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .gallery-card { background: var(--bg-card); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); transition: transform .22s, box-shadow .22s; cursor: pointer; }
+    .gallery-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.08); }
+    .gallery-img-placeholder { width: 100%; height: 160px; overflow: hidden; }
+    .gallery-img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-body { padding: 14px 16px 16px; }
+    .gallery-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
+    .gallery-desc { font-size: .76rem; color: var(--text-muted); margin: 5px 0 10px; line-height: 1.55; }
+    .gallery-price { font-size: .9rem; font-weight: 700; color: var(--accent); }
+    .gallery-add-btn { width: 100%; margin-top: 10px; background: var(--text); color: #fff; border: none; padding: 8px; border-radius: 8px; font-size: .76rem; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; transition: .18s; }
+    .gallery-add-btn:hover { background: #333; }
+    .gallery-del-btn { background: none; border: 1px solid #FFCDD2; color: #D32F2F; padding: 3px 9px; border-radius: 6px; font-size: .7rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: .18s; font-family: 'Plus Jakarta Sans', sans-serif; flex-shrink: 0; }
+    .gallery-del-btn:hover { background: #FFEBEE; border-color: #D32F2F; }
+
+    /* ── CULTURE CARDS ── */
+    .culture-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .culture-card { background: var(--bg-card); border-radius: 14px; padding: 26px; border: 1px solid var(--border); border-top: 3px solid var(--accent); }
+    .culture-icon { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+    .culture-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .culture-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -.2px; }
+    .culture-text { font-size: .81rem; color: #555; line-height: 1.68; }
+    .culture-source { font-size: .7rem; color: var(--accent); margin-top: 10px; font-style: italic; }
+
+    /* ── CHATBOT FLOATING ── */
+    .chat-fab { position: fixed; bottom: 24px; right: 24px; z-index: 2000; }
+    .chat-fab-btn {
+      width: 54px; height: 54px;
+      background: var(--text);
+      border: none;
+      border-radius: 50%; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,.22);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .2s, box-shadow .2s;
+      overflow: hidden; padding: 0;
+    }
+    .chat-fab-btn:hover { transform: scale(1.06); box-shadow: 0 6px 22px rgba(0,0,0,.28); }
+    .chat-fab-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    .chat-window {
+      position: fixed;
+      bottom: 88px; right: 24px;
+      width: 320px; height: 470px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 16px 48px rgba(0,0,0,.15);
+      display: flex; flex-direction: column;
+      overflow: hidden; z-index: 2000;
+      border: 1px solid var(--border);
+    }
+    .chat-header {
+      background: var(--text);
+      padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px;
+      height: 56px; flex-shrink: 0;
+    }
+    .chat-avatar-sm {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      overflow: hidden; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,.2);
+    }
+    .chat-avatar-sm img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-header-info h4 { color: #fff; font-size: .86rem; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .chat-header-info p { color: rgba(255,255,255,.55); font-size: .69rem; }
+    .chat-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,.6); cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; line-height: 1; }
+    .chat-close:hover { color: white; background: rgba(255,255,255,.1); }
+
+    .chat-iframe-container { flex: 1; width: 100%; overflow: hidden; }
+    .chat-iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(6px); z-index: 3000; display: none; align-items: center; justify-content: center; }
+    .modal-box { background: white; padding: 32px; border-radius: 18px; width: 440px; box-shadow: 0 20px 48px rgba(0,0,0,.15); border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; }
+    .modal-box h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); margin-bottom: 22px; font-size: 1.3rem; font-weight: 800; letter-spacing: -.3px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: .76rem; color: var(--text-muted); font-weight: 600; margin-bottom: 5px; text-transform: uppercase; letter-spacing: .4px; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 10px 13px;
+      border: 1px solid var(--border); border-radius: 9px;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: .84rem; color: var(--text);
+      outline: none; transition: .18s; background: var(--bg-soft);
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--text); box-shadow: 0 0 0 3px rgba(0,0,0,.06); background: #fff; }
+
+    /* Image upload area */
+    .img-upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: .18s;
+      background: var(--bg-soft);
+      position: relative;
+    }
+    .img-upload-area:hover { border-color: var(--text-muted); background: var(--bg); }
+    .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .img-upload-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 7px; display: none; }
+    .img-upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; }
+    .img-upload-placeholder svg { opacity: .35; }
+    .img-upload-placeholder span { font-size: .78rem; color: var(--text-muted); }
+
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+    .btn-cancel { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 9px 20px; border-radius: 9px; font-size: .83rem; cursor: pointer; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; transition: .18s; }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+    .btn-submit { background: var(--text); border: none; color: white; padding: 9px 20px; border-radius: 9px; font-size: .83rem; cursor: pointer; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; transition: .18s; }
+    .btn-submit:hover { background: #333; }
+
+    .add-product-btn {
+      background: white; color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 9px;
+      font-size: .82rem; font-weight: 600;
+      cursor: pointer; transition: .18s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .add-product-btn:hover { background: var(--bg-soft); border-color: var(--text-muted); }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--bg-soft); border-top: 1px solid var(--border); color: var(--text-muted); padding: 28px 52px; text-align: center; font-size: .8rem; margin-top: 16px; }
+    .footer strong { color: var(--text); }
+
+    /* cerita page quote block */
+    .quote-block { background: var(--bg-soft); padding: 32px; border-radius: 14px; border-left: 4px solid var(--accent); margin-bottom: 32px; }
+    .quote-block p { font-size: .95rem; color: var(--text); line-height: 1.88; margin-bottom: 14px; text-align: justify; }
+    .quote-block p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <img src="logo.png" alt="Logo" onerror="this.style.display='none';this.parentNode.style.background='#1A1A1A'">
+      </div>
+      <span class="nav-logo-text">Budaya Nusantara</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="showSection('beranda')">Beranda</button>
+      <button class="nav-btn" onclick="showSection('galeri')">Galeri Karya</button>
+      <button class="nav-btn" onclick="showSection('cerita')">Cerita Nusantara</button>
+    </div>
+    <button class="nav-chat-btn" onclick="toggleChat()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" fill="white"/></svg>
+      Asisten Chat
+    </button>
+  </nav>
+
+  <!-- BERANDA -->
+  <div id="section-beranda">
+    <!-- HERO SLIDER -->
+    <div class="hero" id="hero">
+      <div class="hero-slide active" id="slide-0" style="background-image: linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.48)), url('satu.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-overlay">
+          <div class="hero-tag">Fakta Unik · Relief Borobudur</div>
+          <h1 class="hero-title">Borobudur Punya 2.672 Panel Relief</h1>
+          <p class="hero-sub">Candi Borobudur menyimpan 2.672 panel relief yang jika dijajar akan membentang sepanjang 6 km — menjadikannya galeri relief Buddha terlengkap dan terpanjang di dunia.</p>
+        </div>
+      </div>
+      <div class="hero-slide inactive" id="slide-1" style="background-image: linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.48)), url('dua.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-overlay">
+          <div class="hero-tag">Fakta Unik · Tari Tradisional</div>
+          <h1 class="hero-title">Indonesia Punya 3.000+ Tarian Daerah</h1>
+          <p class="hero-sub">Dari Sabang sampai Merauke, Indonesia memiliki lebih dari 3.000 tarian tradisional. Setiap gerakan, kostum, dan iringan musiknya adalah bahasa tubuh yang merekam sejarah, kepercayaan, dan jiwa suatu suku bangsa.</p>
+        </div>
+      </div>
+      <div class="hero-slide inactive" id="slide-2" style="background-image: linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)), url('tiga.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-overlay">
+          <div class="hero-tag">Fakta Unik · Seni Batik</div>
+          <h1 class="hero-title">Satu Lembar Batik Tulis Butuh 3 Bulan</h1>
+          <p class="hero-sub">Membuat satu lembar batik tulis dengan canting bisa memakan waktu hingga 3–6 bulan. Setiap titik lilin (malam) ditorehkan dengan tangan, menjadikan tiap kain batik sebagai karya seni yang benar-benar unik dan tak pernah sama persis.</p>
+        </div>
+      </div>
+      <div class="hero-slide inactive" id="slide-3" style="background-image: linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)), url('empat.jpg'); background-size: cover; background-position: center;">
+        <div class="hero-overlay">
+          <div class="hero-tag">Fakta Unik · Barong Bali</div>
+          <h1 class="hero-title">Barong Adalah Penjaga Spiritual Bali</h1>
+          <p class="hero-sub">Barong bukan sekadar topeng — ia adalah simbol kekuatan baik yang melindungi desa dari roh jahat. Tari Barong merupakan pertunjukan sakral yang dipentaskan sebagai bagian dari ritual keseimbangan alam semesta Bali.</p>
+        </div>
+      </div>
+      <button class="hero-arrow left" onclick="changeSlide(-1)">&#8249;</button>
+      <button class="hero-arrow right" onclick="changeSlide(1)">&#8250;</button>
+      <div class="hero-dots" id="hero-dots"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-num">17.000+</div><div class="stat-lbl">Kepulauan</div></div>
+      <div class="stat-item"><div class="stat-num">1.340+</div><div class="stat-lbl">Suku Bangsa</div></div>
+      <div class="stat-item"><div class="stat-num">718+</div><div class="stat-lbl">Bahasa Daerah</div></div>
+      <div class="stat-item"><div class="stat-num">4</div><div class="stat-lbl">Warisan UNESCO</div></div>
+    </div>
+
+    <!-- GALERI preview -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Katalog Kerajinan Pilihan</h2>
+          <p class="section-sub">Pilih karya, dukung pengrajin lokal Nusantara</p>
+        </div>
+        <button class="add-product-btn" onclick="openModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Tambah Produk
+        </button>
+      </div>
+      <div class="gallery-grid" id="gallery-grid-home"></div>
+    </div>
+  </div>
+
+  <!-- GALERI PAGE -->
+  <div id="section-galeri" style="display:none">
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Galeri Karya Nusantara</h2>
+          <p class="section-sub">Setiap karya menyimpan filosofi dan warisan leluhur</p>
+        </div>
+        <button class="add-product-btn" onclick="openModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Tambah Produk Baru
+        </button>
+      </div>
+      <div class="gallery-grid" id="gallery-grid-full"></div>
+    </div>
+  </div>
+
+  <!-- CERITA PAGE -->
+  <div id="section-cerita" style="display:none">
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Pesona Budaya Nusantara</h2>
+          <p class="section-sub">Mengenal jiwa dan filosofi di balik karya leluhur</p>
+        </div>
+      </div>
+      <div style="margin-bottom:36px; border-radius:16px; overflow:hidden; height:380px; position:relative;">
+        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1400&q=80" style="width:100%;height:100%;object-fit:cover;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);display:flex;align-items:flex-end;padding:40px;">
+          <div>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;color:#fff;font-size:1.9rem;font-weight:800;letter-spacing:-.4px;">Indonesia — Mahakarya yang Hidup</h2>
+            <p style="color:rgba(255,255,255,.72);margin-top:8px;max-width:550px;font-size:.9rem;line-height:1.6;">Lebih dari sekadar gugusan pulau — rumah bagi ribuan tradisi yang harmonis dalam Bhinneka Tunggal Ika.</p>
+          </div>
+        </div>
+      </div>
+      <div class="quote-block">
+        <p>Indonesia adalah hamparan mahakarya agung di bentangan garis khatulistiwa. Setiap sudut Nusantara menyimpan ceritanya sendiri, diwariskan dari generasi ke generasi sejak zaman leluhur. Kekayaan ini tercermin dalam setiap ayunan langkah penari keraton, tiupan syahdu seruling bambu, goresan malam pada kain batik, hingga ketukan palu pada pahatan kayu yang sarat filosofi kehidupan.</p>
+        <p>Melestarikan budaya Indonesia bukan hanya tentang menjaga warisan masa lalu di etalase museum, melainkan memastikan identitas, kebijaksanaan, dan jiwa bangsa ini tetap menyala untuk menerangi langkah peradaban di masa depan.</p>
+      </div>
+      <div class="culture-grid" id="culture-grid"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    &nbsp;&middot;&nbsp; &copy; 2026 Budaya Nusantara
+  </div>
+</div>
+
+<!-- FLOATING CHAT -->
+<div class="chat-fab" id="chat-fab">
+  <div class="chat-window" id="chat-window" style="display:none">
+    <div class="chat-header">
+      <div class="chat-avatar-sm">
+        <img src="logo.png" alt="Asisten" onerror="this.style.display='none';this.parentNode.style.background='#444'">
+      </div>
+      <div class="chat-header-info">
+        <h4>Asisten Budaya</h4>
+        <p>Kasir &amp; Transaksi Digital</p>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">&#10005;</button>
+    </div>
+    <div class="chat-iframe-container">
+      <iframe src="http://localhost:8501/?embed=true" id="streamlit-iframe"></iframe>
+    </div>
+  </div>
+
+  <div class="chat-fab-btn" onclick="toggleChat()" title="Chat dengan Asisten Budaya">
+    <img src="logo.png" alt="Chat" onerror="this.src='';this.style.display='none';this.parentNode.innerHTML='<svg width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot;><path d=&quot;M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z&quot; fill=&quot;white&quot;/></svg>'">
+  </div>
+</div>
+
+<!-- MODAL TAMBAH PRODUK -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-box">
+    <h3>Tambah Produk Budaya Baru</h3>
+
+    <div class="form-group">
+      <label>Foto Produk</label>
+      <div class="img-upload-area" id="upload-area" onclick="document.getElementById('prod-img').click()">
+        <input type="file" id="prod-img" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img class="img-upload-preview" id="img-preview" alt="Preview">
+        <div class="img-upload-placeholder" id="upload-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#888" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" fill="#888"/><path d="M21 15l-5-5L5 21" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Klik untuk pilih gambar</span>
+          <span style="font-size:.7rem;color:#aaa">JPG, PNG, WEBP — maks 5MB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="prod-name">Nama Kerajinan / Produk</label>
+      <input type="text" id="prod-name" placeholder="cth: Keris Pusaka, Songket Palembang">
+    </div>
+    <div class="form-group">
+      <label for="prod-desc">Deskripsi Singkat</label>
+      <input type="text" id="prod-desc" placeholder="Deskripsi ringkas mengenai produk">
+    </div>
+    <div class="form-group">
+      <label for="prod-price">Harga Pasaran (Rp)</label>
+      <input type="number" id="prod-price" placeholder="cth: 200000">
+    </div>
+    <div class="form-group">
+      <label for="prod-story">Filosofi &amp; Sejarah Singkat</label>
+      <textarea id="prod-story" rows="3" placeholder="Ceritakan makna filosofis atau sejarah produk ini..."></textarea>
+    </div>
+    <div class="form-group">
+      <label for="prod-source">Sumber Referensi</label>
+      <input type="text" id="prod-source" placeholder="cth: Kemendikbud RI / Catatan Sejarah">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn-submit" onclick="submitProduct()">Simpan Produk</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const menuData = {
+  batik:    { name:"Batik",              price:150000, desc:"Kain motif tradisional Nusantara",                                desc:"Kain motif tradisional Nusantara",           story:"Diakui UNESCO 2009 sebagai Warisan Kemanusiaan. Setiap motif mengandung filosofi siklus kehidupan.",                                                                                                                                                                                                                                source:"UNESCO 2009",                          img:"batik.jpg"    },
+  wayang:   { name:"Wayang",             price:250000, desc:"Kerajinan kulit tokoh pewayangan",                               story:"Terbuat dari kulit kerbau. Media penyampaian moral lewat epik Ramayana & Mahabharata.",                                                                                                                                                                                                                                                                                                            source:"UNESCO 2003",                          img:"wayang.png"   },
+  angklung: { name:"Angklung",           price:75000,  desc:"Alat musik bambu khas Sunda",                                    story:"Satu angklung = satu nada. Filosofinya: harmoni hanya tercipta lewat kerja sama.",                                                                                                                                                                                                                                                                                                                 source:"UNESCO 2010",                          img:"angklung.png" },
+  ukiran:   { name:"Ukiran",             price:120000, desc:"Hiasan pahatan kayu khas Jepara",                                story:"Ada sejak abad ke-16 era Ratu Kalinyamat. Motif bunga-daun melambangkan harmoni manusia & alam.",                                                                                                                                                                                                                                                                                                  source:"Kemendikbud RI",                       img:"ukiran.jpg"   },
+  songket:  { name:"Kain Songket",       price:350000, desc:"Kain tenun tradisional benang emas khas Sumatera",               story:"Songket adalah kain tenun mewah yang ditenun dengan benang emas atau perak, berasal dari kebudayaan Melayu Sumatera, khususnya Palembang dan Minangkabau. Dahulu hanya dikenakan bangsawan dan raja sebagai simbol keagungan. Motif Lepus, Pulir, dan Bungo Pacik mengandung makna spiritual yang mendalam.",                                                                                      source:"Kemendikbud RI — Warisan Budaya Takbenda", img:"songket.jpg"  },
+  kipas:    { name:"Kipas Kayu Cendana", price:150000, desc:"Kerajinan tangan tradisional berbahan kayu cendana khas Bali",   story:"Kipas kayu cendana adalah kerajinan tangan khas Bali yang diwariskan turun-temurun. Kayu cendana dipilih karena keindahan serat dan aromanya yang harum, serta dipercaya memiliki nilai spiritual dalam upacara adat Bali.",                                                                                                                                                                      source:"Dinas Kebudayaan Provinsi Bali",        img:"kipas.jpg"    }
+};
+
+let currentSlide = 0;
+const totalSlides = 4;
+let slideTimer;
+let chatOpen = false;
+let pendingImgDataUrl = null;
+
+function buildGallery(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const BASE_KEYS = ['batik','wayang','angklung','ukiran'];
+  el.innerHTML = Object.entries(menuData).map(([key, d]) => {
+    const imgSrc    = d.dataUrl || d.img || '';
+    const displayName = d.name || cap(key);
+    const isCustom  = !BASE_KEYS.includes(key);
+    const imgTag = imgSrc
+      ? `<img src="${imgSrc}" alt="${displayName}" style="width:100%;height:100%;object-fit:cover">`
+      : `<div style="width:100%;height:100%;background:#F0F0F0;display:flex;align-items:center;justify-content:center"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#ccc" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" fill="#ccc"/><path d="M21 15l-5-5L5 21" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/></svg></div>`;
+    const deleteBtn = isCustom
+      ? `<button class="gallery-del-btn" onclick="event.stopPropagation();deleteProduct('${key}','${displayName}')">Hapus</button>`
+      : '';
+    return `
+    <div class="gallery-card" onclick="triggerChatOrder('${key}')">
+      <div class="gallery-img-placeholder">${imgTag}</div>
+      <div class="gallery-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">
+          <div class="gallery-name">${displayName}</div>
+          ${deleteBtn}
+        </div>
+        <div class="gallery-desc">${d.desc}</div>
+        <div class="gallery-price">Rp ${d.price.toLocaleString('id')}</div>
+        <button class="gallery-add-btn">Pesan via Asisten Chat</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildCulture() {
+  const el = document.getElementById('culture-grid');
+  if (!el) return;
+  el.innerHTML = Object.entries(menuData).map(([key, d]) => {
+    const imgSrc = d.dataUrl || d.img || '';
+    const iconContent = imgSrc
+      ? `<img src="${imgSrc}" alt="${cap(key)}" style="width:100%;height:100%;object-fit:cover">`
+      : `<div style="width:100%;height:100%;background:#F0F0F0;border-radius:8px"></div>`;
+    return `
+    <div class="culture-card">
+      <div class="culture-icon">${iconContent}</div>
+      <div class="culture-title">${cap(key)}</div>
+      <div class="culture-text">${d.story}</div>
+      <div class="culture-source">Sumber: ${d.source}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildHeroDots() {
+  const el = document.getElementById('hero-dots');
+  el.innerHTML = Array.from({length:totalSlides},(_,i)=>`<button class="hero-dot ${i===0?'active':''}" onclick="goSlide(${i})"></button>`).join('');
+}
+
+function goSlide(n) {
+  document.getElementById('slide-'+currentSlide).className='hero-slide inactive';
+  document.querySelectorAll('.hero-dot')[currentSlide].className='hero-dot';
+  currentSlide = (n + totalSlides) % totalSlides;
+  document.getElementById('slide-'+currentSlide).className='hero-slide active';
+  document.querySelectorAll('.hero-dot')[currentSlide].className='hero-dot active';
+  resetSlideTimer();
+}
+function changeSlide(dir) { goSlide(currentSlide + dir); }
+function resetSlideTimer() {
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => changeSlide(1), 4500);
+}
+
+function showSection(s) {
+  ['beranda','galeri','cerita'].forEach(x => {
+    document.getElementById('section-'+x).style.display = x===s ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-btn').forEach((b,i) => {
+    b.className = 'nav-btn' + (['beranda','galeri','cerita'][i]===s?' active':'');
+  });
+  if (s==='galeri') buildGallery('gallery-grid-full');
+  if (s==='cerita') buildCulture();
+}
+
+function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-window').style.display = chatOpen ? 'flex' : 'none';
+}
+
+function triggerChatOrder(productName) {
+  if (!chatOpen) toggleChat();
+  alert(`Yuk, ketik "pesan 1 ${productName}" di dalam Chatbot Asisten Budaya untuk memasukkannya ke keranjang belanja!`);
+}
+
+async function deleteProduct(key, displayName) {
+  if (!confirm(`Hapus produk "${displayName}" dari galeri?`)) return;
+
+  // Hapus dari server
+  try {
+    const res = await fetch(`http://localhost:5050/products/${key}`, { method: 'DELETE' });
+    const result = await res.json();
+    if (!result.ok) { alert('Gagal hapus di server: ' + result.error); return; }
+  } catch (e) {
+    console.warn('Server tidak aktif, hapus lokal saja.');
+  }
+
+  // Hapus dari menuData lokal & rebuild galeri
+  delete menuData[key];
+  buildGallery('gallery-grid-home');
+  buildGallery('gallery-grid-full');
+  buildCulture();
+}
+
+// Image preview di modal
+function previewImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    pendingImgDataUrl = e.target.result;
+    const preview = document.getElementById('img-preview');
+    const placeholder = document.getElementById('upload-placeholder');
+    preview.src = pendingImgDataUrl;
+    preview.style.display = 'block';
+    placeholder.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function openModal() {
+  document.getElementById('product-modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('product-modal').style.display = 'none';
+  ['prod-name','prod-desc','prod-price','prod-story','prod-source'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  // Reset image preview
+  pendingImgDataUrl = null;
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('img-preview').src = '';
+  document.getElementById('upload-placeholder').style.display = 'flex';
+  document.getElementById('prod-img').value = '';
+}
+
+async function submitProduct() {
+  const name   = document.getElementById('prod-name').value.trim();
+  const desc   = document.getElementById('prod-desc').value.trim();
+  const price  = parseInt(document.getElementById('prod-price').value) || 0;
+  const story  = document.getElementById('prod-story').value.trim() || "Karya warisan kerajinan tangan Nusantara.";
+  const source = document.getElementById('prod-source').value.trim() || "Kontribusi Kolektor Lokal";
+
+  if (!name || !desc || !price) {
+    alert("Mohon lengkapi data Nama, Deskripsi, dan Harga produk ya!");
+    return;
+  }
+
+  // Deteksi ekstensi gambar dari data URL
+  let imgExt = "jpg";
+  if (pendingImgDataUrl && pendingImgDataUrl.includes("image/png"))  imgExt = "png";
+  if (pendingImgDataUrl && pendingImgDataUrl.includes("image/webp")) imgExt = "webp";
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = "Menyimpan...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("http://localhost:5050/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name, desc, price, story, source,
+        image_base64: pendingImgDataUrl || "",
+        image_ext: imgExt
+      })
+    });
+
+    const result = await res.json();
+
+    if (result.ok) {
+      // Tambahkan juga ke menuData lokal supaya galeri langsung update
+      // Key = kata pertama nama produk, misal 'Kipas Kayu Cendana' → 'kipas'
+      const key = name.toLowerCase().split(' ')[0];
+      menuData[key] = { price, desc, story, source, dataUrl: pendingImgDataUrl || null, img: result.image };
+      buildGallery('gallery-grid-home');
+      buildGallery('gallery-grid-full');
+      buildCulture();
+      closeModal();
+      alert(`✅ Produk "${name}" berhasil disimpan! Chatbot Streamlit akan otomatis mengenali produk ini.`);
+    } else {
+      alert("Gagal menyimpan: " + result.error);
+    }
+  } catch (err) {
+    // Fallback: simpan lokal saja jika server tidak jalan
+    console.warn("Server tidak aktif, simpan lokal saja:", err);
+    const key = name.toLowerCase().replace(/\s+/g, '');
+    menuData[key] = { price, desc, story, source, dataUrl: pendingImgDataUrl || null };
+    buildGallery('gallery-grid-home');
+    buildGallery('gallery-grid-full');
+    buildCulture();
+    closeModal();
+    alert(`⚠️ Produk "${name}" ditambahkan ke galeri saja.\nJalankan server.py agar chatbot ikut mengenali produk baru.`);
+  } finally {
+    btn.textContent = "Simpan Produk";
+    btn.disabled = false;
+  }
+}
+
+// Load produk dari server (jika aktif), fallback ke menuData lokal
+async function loadProductsFromServer() {
+  try {
+    const res = await fetch("http://localhost:5050/products");
+    const data = await res.json();
+    // Merge: data dari server override menuData lokal
+    Object.entries(data).forEach(([key, val]) => {
+      menuData[key] = { ...val, img: val.image };
+    });
+    console.log("[OK] Produk dimuat dari server:", Object.keys(menuData));
+  } catch (e) {
+    console.warn("[INFO] Server tidak aktif, pakai data lokal.");
+  }
+  buildGallery('gallery-grid-home');
+}
+
+loadProductsFromServer();
+buildHeroDots();
+resetSlideTimer();
+</script>
+</div>
+</body>
+</html>
