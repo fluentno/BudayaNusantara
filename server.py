@@ -8,7 +8,7 @@ import sqlite3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='.')
 CORS(app)
 
 DB_FILE      = "products.db"
