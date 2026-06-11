@@ -1,10 +1,6 @@
 import re
 import json
-import os
-import sqlite3
-
-DB_FILE      = "products.db"
-PRODUCTS_FILE = "products.json"   # fallback jika DB belum ada
+import requests
 
 class NLPEngine:
     def __init__(self):
@@ -12,43 +8,20 @@ class NLPEngine:
         self._build_patterns()
 
     def _load_products(self):
-        # Prioritas 1: baca dari SQLite
-        if os.path.exists(DB_FILE):
-            try:
-                conn = sqlite3.connect(DB_FILE)
-                conn.row_factory = sqlite3.Row
-                rows = conn.execute("SELECT * FROM products").fetchall()
-                conn.close()
-                data = {}
-                for row in rows:
-                    data[row["key"]] = {
-                        "name":   row["name"],
-                        "price":  row["price"],
-                        "image":  row["image"] or "",
-                        "desc":   row["desc"]  or "",
-                        "story":  row["story"] or "",
-                        "source": row["source"] or ""
-                    }
-                print(f"[engine] Produk dari DB: {list(data.keys())}")
+        API_URL = "https://web-budaya.up.railway.app/products" 
+        
+        try:
+            # Chatbot mencoba mengambil data langsung dari API
+            response = requests.get(API_URL)
+            if response.status_code == 200:
+                data = response.json()
+                print(f"[engine] Sukses sinkronisasi dari API: {list(data.keys())}")
                 return data
-            except Exception as e:
-                print(f"[engine] Gagal baca DB: {e}")
+        except Exception as e:
+            print(f"[engine] Gagal sinkronisasi API: {e}")
 
-        # Prioritas 2: fallback ke JSON
-        if os.path.exists(PRODUCTS_FILE):
-            try:
-                with open(PRODUCTS_FILE, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                for key, val in data.items():
-                    if "name" not in val:
-                        val["name"] = key.capitalize()
-                print(f"[engine] Produk dari JSON: {list(data.keys())}")
-                return data
-            except Exception as e:
-                print(f"[engine] Gagal baca JSON: {e}")
-
-        # Prioritas 3: hardcode default
-        print("[engine] Pakai data default.")
+        # Prioritas Terakhir: Hardcode default (muncul kalau API lagi error/mati)
+        print("[engine] Pakai data default karena API gagal.")
         return {
             "batik":    {"name":"Batik",    "price":150000, "image":"batik.jpg",    "desc":"Kain motif tradisional Nusantara",   "story":"Diakui UNESCO 2009.", "source":"UNESCO 2009"},
             "wayang":   {"name":"Wayang",   "price":250000, "image":"wayang.png",   "desc":"Kerajinan kulit tokoh pewayangan",   "story":"Media moral epik Nusantara.", "source":"UNESCO 2003"},
