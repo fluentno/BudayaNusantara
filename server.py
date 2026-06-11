@@ -133,7 +133,7 @@ def index():
 
 if __name__ == "__main__":
     init_db()
-    port  = int(os.environ.get("PORT", 5050))
-    debug = os.environ.get("FLASK_ENV") != "production"
-    print(f"  Server berjalan di port {port}")
-    app.run(debug=debug, host="0.0.0.0", port=port)
+    # Biarkan ini mengambil port dinamis dari Railway
+    port = int(os.environ.get("PORT", 8080))
+    # Wajib False dan 0.0.0.0
+    app.run(debug=False, host="0.0.0.0", port=port)
