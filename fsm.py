@@ -56,6 +56,8 @@ class BudayaFSM:
 
         elif self.state == State.ORDERING:
             if intent == "ASK_MENU":
+                # BARIS INI YANG DITAMBAHKAN AGAR OTOMATIS SINKRON KE API
+                self.nlp.reload() 
                 self.response = self.get_menu_text()
 
             elif intent == "ASK_STORY":
