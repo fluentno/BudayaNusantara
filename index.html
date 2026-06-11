@@ -537,7 +537,7 @@ async function deleteProduct(key, displayName) {
 
   // Hapus dari server
   try {
-    const res = await fetch(`http://localhost:5050/products/${key}`, { method: 'DELETE' });
+    const res = await fetch(`/products/${key}`, { method: 'DELETE' });
     const result = await res.json();
     if (!result.ok) { alert('Gagal hapus di server: ' + result.error); return; }
   } catch (e) {
@@ -606,7 +606,7 @@ async function submitProduct() {
   btn.disabled = true;
 
   try {
-    const res = await fetch("http://localhost:5050/products", {
+    const res = await fetch("/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -650,7 +650,7 @@ async function submitProduct() {
 // Load produk dari server (jika aktif), fallback ke menuData lokal
 async function loadProductsFromServer() {
   try {
-    const res = await fetch("http://localhost:5050/products");
+    const res = await fetch("/products");
     const data = await res.json();
     // Merge: data dari server override menuData lokal
     Object.entries(data).forEach(([key, val]) => {
