@@ -11,7 +11,6 @@ class NLPEngine:
         API_URL = "https://web-budaya.up.railway.app/products" 
         
         try:
-            # Chatbot mencoba mengambil data langsung dari API
             response = requests.get(API_URL)
             if response.status_code == 200:
                 data = response.json()
@@ -20,7 +19,6 @@ class NLPEngine:
         except Exception as e:
             print(f"[engine] Gagal sinkronisasi API: {e}")
 
-        # Prioritas Terakhir: Hardcode default (muncul kalau API lagi error/mati)
         print("[engine] Pakai data default karena API gagal.")
         return {
             "batik":    {"name":"Batik",    "price":150000, "image":"batik.jpg",    "desc":"Kain motif tradisional Nusantara",   "story":"Diakui UNESCO 2009.", "source":"UNESCO 2009"},
